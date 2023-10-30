@@ -1,12 +1,12 @@
 # Introduction
 
-Congratulations on completing the tutorial on how to create your first Wagtail Site! Having completed the tutorial and built a blog site from scratch, you should now have a solid understanding of the basic building blocks of a Wagtail website. We hope you enjoyed the process as much as we did.
+Congratulations on completing [Your first Wagtail site](https://docs.wagtail.org/en/stable/getting_started/tutorial.html) tutorial! Now that you've completed the tutorial and built a blog site from scratch, you should have a solid understanding of the basic building blocks of a Wagtail website. We hope you enjoyed learning all about Wagtail.
 
-Now that you can build a blog site with Wagtail, why stop there? We curated this series of tutorials to help you advance your Wagtail knowledge and transform your blog into something even more impressive, a fully deployable portfolio site.
+Now that you can build a blog site with Wagtail, why stop there? We created this series of tutorials to help you grow your Wagtail knowledge. 
 
-Before you begin this series of tutorials, make sure you complete the [Your First Wagtail Site Tutorial]()
+In this series of tutorials, you'll transform your blog site into a fully deployable portfolio site. So, you must complete the [Your First Wagtail Site Tutorial]() before you begin this series.
 
-In this series, you will learn the following:
+In this series, you'll learn the following:
 - How to add pagination to your Wagtail website
 - How to use Wagtail StreamField
 - How to use Wagtail documents
@@ -15,15 +15,4 @@ In this series, you will learn the following:
 - How to implement the search feature in a Wagtail website
 - How to deploy a Wagtail website
 
-## Set up your Wagtail project
-To get started, you need to set up your Wagtail project. To set up your Wagtail project, do the following:
-1. Create and activate your virtual environment.
-2. Install Wagtail and generate your portfolio project. 
-3. Install your project dependencies.
-4. Create your database.
-
-```Note
-In this tutorial, you will use the default Wagtail database, SQLite.
-```
-
-5. Create an admin user.
+Now, let's dive in.

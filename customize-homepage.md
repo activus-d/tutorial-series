@@ -4,11 +4,11 @@ When building your portfolio website, the first step is to set up and personaliz
 
 1. Introduction: A concise introduction captures visitors' attention.
 2. Biography: Include a brief biography that introduces yourself. This section should mention your name, role, expertise, and unique qualities.
-3. Hero Image: This may be a professional headshot or graphical representation that showcases your work and adds visual appeal.
+3. Hero Image: This may be a professional headshot or other image that showcases your work and adds visual appeal.
 4. Call to Action (CTA): Incorporate a CTA that guides visitors to take a specific action, such as "View Portfolio," "Hire Me," or "Learn More."
 5. Downloadable Resume
 
-In this section, you'll learn how to add features 1 to 4 to your homepage. You will add your resume or CV later in the tutorial.
+In this section, you'll learn how to add features 1 through 4 to your homepage. You'll add your resume or CV later in the tutorial.
 
 Now, modify your `home/models` file to include the following:
 
@@ -17,12 +17,13 @@ from django.db import models
 
 from wagtail.models import Page
 from wagtail.fields import RichTextField
-from wagtail.admin.panels import FieldPanel
+
+# import MultiFieldPanel:
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 
 
 class HomePage(Page):
-    # Hero section of HomePage
+    # add the Hero section of HomePage:
     image = models.ForeignKey(
         "wagtailimages.Image",
         null=True,
@@ -51,9 +52,9 @@ class HomePage(Page):
         help_text="Choose a page to link to for the Call to Action",
     )
 
-    # Body section of the HomePage
     body = RichTextField(blank=True)
 
+    # modify your content_panels:
     content_panels = Page.content_panels + [
         MultiFieldPanel(
             [
@@ -70,41 +71,38 @@ class HomePage(Page):
 
 You might already be familiar with the different parts of your HomePage model. The `image` field is a `ForeignKey` referencing Wagtail's built-in Image model for storing images. Similarly, `hero_cta_link` is a `ForeignKey` to `wagtailcore.Page`. The `wagtailcore.Page` is the base class for all other page types in Wagtail. This means all Wagtail pages inherit from `wagtailcore.Page`. For instance, your `class HomePage(page)` inherits from `wagtailcore.Page`.
 
-Using `on_delete=models.SET_NULL` ensures that if you remove an image or hero link from your admin interface, the `image` and `hero_cta_link` fields on your Homepage will be set to null, preserving their entries. Read the [Django documentation](https://docs.djangoproject.com/en/4.2/ref/models/fields/#django.db.models.ForeignKey.on_delete) for more values for the `on-delete` attribute. 
+Using `on_delete=models.SET_NULL` ensures that if you remove an image or hero link from your admin interface, the `image` and `hero_cta_link` fields on your Homepage will be set to null, preserving their data entries. Read the [Django documentation](https://docs.djangoproject.com/en/4.2/ref/models/fields/#django.db.models.ForeignKey.on_delete) for more values for the `on-delete` attribute. 
 
-The `related_name` attribute defines the reverse relationship from the related model, providing a readable attribute name when accessing associated objects. For instance, if you want to access the HomePage's `image` from `wagtailimages.Image`, you can use the value that you give to the `related_name` attribute in your QuerySet. When you use `related_name="+"`, then you don't want to create a reverse relationship for your `ForeignKey` fields. In other words, you're instructing Django not to create a way to access the HomePage's `image` from `wagtailimages.Image` and `hero_cta_link` from `wagtailcore.Page`. 
+The `related_name` attribute creates a relationship between related models. For example, if you want to access the HomePage's `image` from `wagtailimages.Image`, you can use the `related_name` attribute. When you use `related_name="+"`, you create a connection between models that doesn't create a reverse relationship for your `ForeignKey` fields. In other words, you're instructing Django to create a way to access the HomePage's `image` from `wagtailimages.Image` but not a way to access `wagtailimages.Image` from the HomePage's `image`. 
 
-While `body` is a `RichTextField`, `hero_text` and `hero_cta` are `CharField`, a typical Django string field for storing short texts.
+While `body` is a `RichTextField`, `hero_text` and `hero_cta` are `CharField`, a Django string field for storing short text.
 
 The [Your First Wagtail Tutorial]() already explained `content_panels`. [FieldPanel](https://docs.wagtail.org/en/stable/reference/pages/panels.html#fieldpanel) and [MultiPanel](https://docs.wagtail.org/en/stable/reference/pages/panels.html#multifieldpanel) are types of Wagtail built-in [Panels](https://docs.wagtail.org/en/stable/reference/pages/panels.html#panel-types). They're both subclasses of the base Panel class and accept all of Wagtail's `Panel` parameters in addition to their own. While the `FieldPanel` provides a widget for basic Django model fields, `MultiFieldPanel` helps you decide the structure of the editing form. For example, you can group related fields.
 
-Now that you understand the different parts of your HomePage model, migrate your database by running:
+Now that you understand the different parts of your `HomePage` model, migrate your database by running `python manage.py makemigrations` and
+then `python manage.py migrate`
 
-```sh
-python manage.py makemigrations
-python manage.py migrate
-```
+After migrating your database, start your server by running
+`python manage.py runserver`.
 
-After migrating your database, start your server by running:
+## Add content to your homepage
 
-```sh
-python manage.py runserver
-```
+To add content to your homepage through the admin interface, follow these steps:
 
-Now go to your Wagtail admin interface and follow these steps to add data to your Home page:
-1. Log in with your admin user details.
-2. Click pages.
-3. Click the **edit** icon beside **Home**.
-4. Choose an image, choose a page, and add the appropriate data to the input fields.
+1. Log in to your [admin interface](http://127.0.0.1:8000/admin/), with your admin username and password.
+2. Click Pages.
+3. Click the **edit 🖊️** icon beside **Home**.
+4. Choose an image, choose a page, and add data to the input fields.
 
 ```Note
-You can only choose the Home page to link to your Call to Action because you only have the Home page in your site. You will choose a more suitable page later in the tutorial.
+You can choose your home page or blog index page to link to your Call to Action. You can choose a more suitable page later in the tutorial.
 ```
+
 5. Publish your Home page.
 
-You have all the necessary data for your Home page now. You can visit your Home page in your browser by going to `http://127.0.0.1:8000`. You can't see your data, right? You probably know why you can't see the data you added to your Home page from the Wagtail admin interface. You have to modify your Homepage template to display the data. 
+You have all the necessary data for your Home page now. You can visit your Home page by going to `http://127.0.0.1:8000` in your browser. You can't see all your data, right? That’s because you must modify your Homepage template to display the data.
 
-Delete the content of your `home/templates/home/home_page.html` file and add the following to it:
+Replace the content of your `home/templates/home/home_page.html` file with the following:
 
 ```html+django
 {% extends "base.html" %}
@@ -128,8 +126,10 @@ Delete the content of your `home/templates/home/home_page.html` file and add the
 {% endblock content %}
 ```
 
-In your Homepage template, notice the use of `firstof`. The `firstof` template tag displays the first non-empty value from a list of variables or literals. It's helpful when you have a series of fallback options, and you want to display the first one that holds value. So, in your template, the `firstof` template tag displays `page.hero_cta` if it holds a value. If `page.hero_cta` doesn't hold a value, then it displays `page.hero_cta_link.title`.
+In your Homepage template, notice the use of `firstof` in line 13. It's helpful to use this tag when you have created a series of fallback options, and you want to display the first one that has a value. So, in your template, the `firstof` template tag displays `page.hero_cta` if it has a value. If `page.hero_cta` doesn't have a value, then it displays `page.hero_cta_link.title`.
 
-Congratulations! You have completed the first stage of your Portfolio website 🎉🎉🎉.
+Congratulations! You've completed the first stage of your Portfolio website 🎉🎉🎉.
 
-<!-- Note to Damilola: Provide an explanation for StreamField and distinguish it from RichtextField; Ask for a draft explanation of wagtailcore.Page from Thibaud. Explain "firstof" in the Homepage template. You can reference the "firstof" in django documentation-->
+<!-- 
+Ask Thibaud if the Resume page is downloadable.
+-->
